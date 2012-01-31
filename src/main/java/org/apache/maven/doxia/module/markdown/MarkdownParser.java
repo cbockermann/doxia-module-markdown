@@ -20,7 +20,7 @@ public class MarkdownParser extends AbstractParser {
 
 	public void parse(Reader reader, Sink sink) throws ParseException {
 		getLog().info("markdown.parse()");
-		MarkdownProcessor processor = new MarkdownProcessor();
+		//MarkdownProcessor processor = new MarkdownProcessor();
 
 		String txt;
 		try {
@@ -30,7 +30,9 @@ public class MarkdownParser extends AbstractParser {
 			throw new MarkdownParseException("Cannot read input file", e);
 		}
 
-		String html = processor.markdown(txt);
+		MarkdownCompiler processor = new MarkdownCompiler();
+		String html = processor.compileHtml( txt );
+		//String html = processor.markdown(txt);
 
 		sink.rawText(html);
 

@@ -17,6 +17,19 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+
+
+        <distributionManagement>
+                <repository>
+                        <id>jwall</id>
+                        <url>https://secure.jwall.org/maven/repository/jwall/</url>
+                </repository>
+                <snapshotRepository>
+                        <id>jwall-snapshots</id>
+                        <url>https://secure.jwall.org/maven/repository/snapshots/</url>
+                </snapshotRepository>
+        </distributionManagement>
+
 	<developers>
 		<developer>
 			<id>rds</id>
