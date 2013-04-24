@@ -17,41 +17,39 @@ import com.petebevin.markdown.MarkdownProcessor;
 
 /**
  * @author chris
- *
+ * 
  */
 public class MarkdownCompiler {
 
 	public final static String PDFLATEX = "/sw/bin/pdflatex";
 	public final static String CONVERT = "/usr/local/bin/convert";
 
-	public final static String LATEX_BEGIN = 
-			"\\documentclass[a4,12pt]{article}\n"
-					+ "\\begin{document}\n"
-					+ "\\pagestyle{empty}\n"
-					+ "\\begin{displaymath}\n"
-					+ "";
+	public final static String LATEX_BEGIN = "\\documentclass[a4,12pt]{article}\n"
+			+ "\\begin{document}\n"
+			+ "\\pagestyle{empty}\n"
+			+ "\\begin{displaymath}\n" + "";
 
-	public final static String LATEX_END =
-			"\n"
-					+ "\\end{displaymath}\n"
-					+ "\\end{document}";
+	public final static String LATEX_END = "\n" + "\\end{displaymath}\n"
+			+ "\\end{document}";
 
-	
 	final List<MarkdownPreprocessor> preProcessors = new ArrayList<MarkdownPreprocessor>();
 
-
-	public MarkdownCompiler(){
-		preProcessors.add( new MarkdownTablePreprocessor() );
+	public MarkdownCompiler() {
+		preProcessors.add(new MarkdownUmlautEscaper());
+		preProcessors.add(new MarkdownTablePreprocessor());
 	}
-	
 
-	public static String read( InputStream in ){
+	public void addPreProcessor(final MarkdownPreprocessor proc) {
+		preProcessors.add(proc);
+	}
+
+	public static String read(InputStream in) {
 		try {
 			StringBuffer s = new StringBuffer();
-			BufferedReader r = new BufferedReader( new InputStreamReader( in ) );
+			BufferedReader r = new BufferedReader(new InputStreamReader(in));
 			String line = r.readLine();
-			while( line != null ){
-				s.append( line + "\n" );
+			while (line != null) {
+				s.append(line + "\n");
 				line = r.readLine();
 			}
 			return s.toString();
@@ -61,45 +59,44 @@ public class MarkdownCompiler {
 		return "";
 	}
 
-	public static String compile( URL url ){
+	public static String compile(URL url) {
 		try {
-			return compile( url.openStream() );
+			return compile(url.openStream());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "";
 	}
 
-	public static String compile( InputStream in ){
-		return compile( read( in ) );
+	public static String compile(InputStream in) {
+		return compile(read(in));
 	}
 
-	public String compileHtml( String text ){
-		System.err.println( "Compiling:\n" + text );
+	public String compileHtml(String text) {
+		// System.err.println("Compiling:\n" + text);
 		String src = text;
 		MarkdownProcessor p = new MarkdownProcessor();
-		
-		Map<String,String> subs = new LinkedHashMap<String,String>();
-		for( MarkdownPreprocessor pre : preProcessors ){
-			System.out.println( "Running MarkdownPreprocessor " + pre );
-			src = pre.process( src, subs );
+
+		Map<String, String> subs = new LinkedHashMap<String, String>();
+		for (MarkdownPreprocessor pre : preProcessors) {
+			// System.out.println("Running MarkdownPreprocessor " + pre);
+			src = pre.process(src, subs);
 		}
 
-		System.out.println( "My compiled substitutions: " + subs );
-		String html = p.markdown( src );
-		
-		List<String> refs = new ArrayList<String>( subs.keySet() );
-		Collections.reverse( refs );
-		for( String key : refs ){
-			html = html.replace( key, subs.get( key ) );
+		// System.out.println("My compiled substitutions: " + subs);
+		String html = p.markdown(src);
+
+		List<String> refs = new ArrayList<String>(subs.keySet());
+		Collections.reverse(refs);
+		for (String key : refs) {
+			html = html.replace(key, subs.get(key));
 		}
 		return html;
 	}
 
-	public static String compile( String text ){
+	public static String compile(String text) {
 		MarkdownCompiler compiler = new MarkdownCompiler();
-		return compiler.compileHtml( text );
-
+		return compiler.compileHtml(text);
 
 	}
 }

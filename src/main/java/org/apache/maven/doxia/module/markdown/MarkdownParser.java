@@ -7,8 +7,6 @@ import org.apache.maven.doxia.parser.AbstractParser;
 import org.apache.maven.doxia.parser.ParseException;
 import org.apache.maven.doxia.sink.Sink;
 
-import com.petebevin.markdown.MarkdownProcessor;
-
 /**
  * @plexus.component role="org.apache.maven.doxia.parser.Parser"
  *                   role-hint="markdown"
@@ -20,7 +18,7 @@ public class MarkdownParser extends AbstractParser {
 
 	public void parse(Reader reader, Sink sink) throws ParseException {
 		getLog().info("markdown.parse()");
-		//MarkdownProcessor processor = new MarkdownProcessor();
+		// MarkdownProcessor processor = new MarkdownProcessor();
 
 		String txt;
 		try {
@@ -31,8 +29,8 @@ public class MarkdownParser extends AbstractParser {
 		}
 
 		MarkdownCompiler processor = new MarkdownCompiler();
-		String html = processor.compileHtml( txt );
-		//String html = processor.markdown(txt);
+		String html = processor.compileHtml(txt);
+		// String html = processor.markdown(txt);
 
 		sink.rawText(html);
 
@@ -43,7 +41,7 @@ public class MarkdownParser extends AbstractParser {
 
 	/**
 	 * Reads a the content of the Reader.
-	 *
+	 * 
 	 * @param reader
 	 * @return the String that this reader provides.
 	 * @throws IOException

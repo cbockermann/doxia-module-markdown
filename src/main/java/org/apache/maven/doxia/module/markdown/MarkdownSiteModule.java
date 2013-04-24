@@ -4,7 +4,7 @@ import org.apache.maven.doxia.module.site.AbstractSiteModule;
 
 /**
  *
- * @author <a href="mailto:decamps@users.sf.net">Régis Décamps</a>
+ * @author <a href="mailto:decamps@users.sf.net">Regis Decamps</a>
  * @version $Id$
  * @since 1.0
  * @plexus.component role="org.apache.maven.doxia.module.site.SiteModule"
